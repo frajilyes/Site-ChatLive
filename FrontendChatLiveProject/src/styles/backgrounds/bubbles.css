@@ -1,0 +1,35 @@
+.bg--bubbles .bubble {
+  bottom: -18vmin;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, rgba(255, 166, 98, 0.55), rgba(255, 106, 0, 0.12) 62%, transparent 70%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  animation: bubble-rise linear infinite;
+}
+
+.bg--bubbles .halo {
+  top: 20%;
+  right: -12vmax;
+  width: 56vmax;
+  height: 56vmax;
+  filter: blur(90px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 106, 0, 0.45), transparent 68%);
+  animation: core-breathe 14s var(--ease-in-out) infinite;
+}
+
+@keyframes bubble-rise {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.7);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate3d(6vw, -122vh, 0) scale(1.25);
+    opacity: 0;
+  }
+}

@@ -1,0 +1,123 @@
+.metric {
+  height: 100%;
+}
+
+.metric__value {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.metric h3 {
+  margin-bottom: 0.4rem;
+  font-size: var(--fs-base);
+}
+
+.metric p {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.status-banner__dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: pulse-dot 2.4s var(--ease-out) infinite;
+}
+
+.status-banner.is-down .status-banner__dot {
+  background: var(--warning);
+}
+
+.status-banner__value {
+  margin-left: auto;
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  color: var(--text-strong);
+}
+
+.status-banner__value em {
+  font-size: var(--fs-lg);
+  font-style: normal;
+  color: var(--brand-500);
+}
+
+.status-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.status-row__dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+.status-row.is-down .status-row__dot {
+  background: var(--warning);
+}
+
+.status-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.status-row__text strong {
+  font-size: var(--fs-sm);
+  color: var(--text-strong);
+}
+
+.status-row__text small {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.status-row__state {
+  margin-left: auto;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--success);
+}
+
+.status-row.is-down .status-row__state {
+  color: var(--warning);
+}
+
+@media (max-width: 720px) {
+  .status-banner {
+    flex-wrap: wrap;
+  }
+  .status-banner__value {
+    margin-left: 0;
+  }
+  .status-row {
+    flex-wrap: wrap;
+  }
+  .status-row__state {
+    margin-left: auto;
+  }
+  .api__endpoint {
+    grid-template-columns: 68px minmax(0, 1fr) auto;
+    row-gap: 0.4rem;
+  }
+  .api__summary {
+    grid-column: 1 / -1;
+  }
+  .press__logo {
+    flex-basis: 100%;
+  }
+}

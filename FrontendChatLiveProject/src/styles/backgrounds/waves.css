@@ -1,0 +1,46 @@
+.bg--waves .wave {
+  left: -55%;
+  width: 210%;
+  height: 62vmin;
+  border-radius: 44% 46% 40% 44%;
+  opacity: 0.55;
+}
+
+.bg--waves .w1 {
+  bottom: -26vmin;
+  background: linear-gradient(90deg, rgba(255, 106, 0, 0.62), rgba(255, 166, 98, 0.22));
+  animation: wave-roll 17s linear infinite;
+}
+.bg--waves .w2 {
+  bottom: -32vmin;
+  opacity: 0.34;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 106, 0, 0.4));
+  animation: wave-roll 25s linear infinite reverse;
+}
+.bg--waves .w3 {
+  bottom: -38vmin;
+  opacity: 0.24;
+  background: linear-gradient(90deg, rgba(255, 138, 51, 0.5), transparent);
+  animation: wave-roll 34s linear infinite;
+}
+
+.bg--waves .halo {
+  top: -18vmax;
+  left: 50%;
+  width: 70vmax;
+  height: 46vmax;
+  translate: -50% 0;
+  filter: blur(90px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 106, 0, 0.42), transparent 70%);
+  animation: core-breathe 13s var(--ease-in-out) infinite;
+}
+
+@keyframes wave-roll {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(360deg);
+  }
+}

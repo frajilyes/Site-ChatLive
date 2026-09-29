@@ -1,0 +1,49 @@
+.bg--rays .beam {
+  top: 50%;
+  left: 50%;
+  width: 160vmax;
+  height: 160vmax;
+  translate: -50% -50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 14deg,
+    rgba(255, 106, 0, 0.13) 16deg 22deg,
+    transparent 24deg 44deg,
+    rgba(255, 255, 255, 0.06) 46deg 50deg,
+    transparent 52deg 88deg,
+    rgba(255, 106, 0, 0.1) 90deg 96deg,
+    transparent 98deg 360deg
+  );
+  mask-image: radial-gradient(circle, #000 0%, transparent 68%);
+  animation: slow-spin 60s linear infinite;
+}
+
+.bg--rays .beam2 {
+  top: 50%;
+  left: 50%;
+  width: 130vmax;
+  height: 130vmax;
+  translate: -50% -50%;
+  background: conic-gradient(
+    from 180deg,
+    transparent 0deg 30deg,
+    rgba(255, 166, 98, 0.1) 32deg 40deg,
+    transparent 42deg 200deg,
+    rgba(255, 106, 0, 0.12) 205deg 214deg,
+    transparent 216deg 360deg
+  );
+  mask-image: radial-gradient(circle, #000 0%, transparent 62%);
+  animation: slow-spin 40s linear infinite reverse;
+}
+
+.bg--rays .sun {
+  top: 12%;
+  left: 50%;
+  width: 48vmax;
+  height: 48vmax;
+  translate: -50% -50%;
+  border-radius: 50%;
+  filter: blur(90px);
+  background: radial-gradient(circle, rgba(255, 106, 0, 0.7), transparent 66%);
+  animation: core-breathe 11s var(--ease-in-out) infinite;
+}

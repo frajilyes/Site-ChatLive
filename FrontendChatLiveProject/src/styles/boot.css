@@ -1,0 +1,18 @@
+#boot {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--bg);
+}
+
+.page--instant,
+.page--instant .hero__content > * {
+  animation: none;
+}
+
+#boot .cookies {
+  animation: none;
+}

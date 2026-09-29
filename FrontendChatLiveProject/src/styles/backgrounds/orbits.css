@@ -1,0 +1,77 @@
+.bg--orbits .ring {
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 106, 0, 0.24);
+  translate: -50% -50%;
+}
+
+.bg--orbits .ring::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-400);
+  box-shadow: 0 0 18px 4px rgba(255, 106, 0, 0.75);
+}
+
+.bg--orbits .r1 {
+  width: 34vmax;
+  height: 34vmax;
+  animation: slow-spin 18s linear infinite;
+}
+.bg--orbits .r2 {
+  width: 56vmax;
+  height: 56vmax;
+  border-color: rgba(255, 255, 255, 0.1);
+  animation: slow-spin 30s linear infinite reverse;
+}
+.bg--orbits .r3 {
+  width: 82vmax;
+  height: 82vmax;
+  border-color: rgba(255, 106, 0, 0.13);
+  animation: slow-spin 48s linear infinite;
+}
+
+.bg--orbits .core {
+  top: 50%;
+  left: 50%;
+  width: 42vmax;
+  height: 42vmax;
+  translate: -50% -50%;
+  border-radius: 50%;
+  filter: blur(80px);
+  background: radial-gradient(circle, rgba(255, 106, 0, 0.6), transparent 68%);
+  animation: core-breathe 9s var(--ease-in-out) infinite;
+}
+
+.bg--orbits .glowline {
+  inset: 0;
+  background: repeating-linear-gradient(
+    115deg,
+    transparent 0 120px,
+    rgba(255, 255, 255, 0.035) 120px 121px
+  );
+  animation: line-slide 20s linear infinite;
+}
+
+@keyframes core-breathe {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.14);
+    opacity: 1;
+  }
+}
+
+@keyframes line-slide {
+  to {
+    transform: translate3d(-121px, 0, 0);
+  }
+}

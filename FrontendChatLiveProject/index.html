@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050506" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <title>ChatLive - Talk live, anywhere in the world</title>
+
+    <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+    <style>
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400 700;
+        font-display: optional;
+        src: url('/fonts/inter-latin.woff2') format('woff2');
+      }
+
+      @font-face {
+        font-family: 'Sora';
+        font-style: normal;
+        font-weight: 600 700;
+        font-display: optional;
+        src: url('/fonts/sora-latin.woff2') format('woff2');
+      }
+
+      @font-face {
+        font-family: 'Inter fallback';
+        src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial');
+        size-adjust: 107%;
+        ascent-override: 90%;
+        descent-override: 22%;
+        line-gap-override: 0%;
+      }
+
+      @font-face {
+        font-family: 'Sora fallback';
+        src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial');
+        size-adjust: 112%;
+        ascent-override: 94%;
+        descent-override: 24%;
+        line-gap-override: 0%;
+      }
+
+      [data-cookie-consent] #boot .cookies {
+        display: none;
+      }
+
+      #boot .boot-moon {
+        display: none;
+      }
+
+      [data-theme='light'] #boot .boot-sun {
+        display: none;
+      }
+
+      [data-theme='light'] #boot .boot-moon {
+        display: block;
+      }
+
+      :root:not([data-motion]) .bg__layer,
+      :root:not([data-motion]) .bg__grain,
+      :root:not([data-motion]) .btn--primary::before,
+      :root:not([data-motion]) .status-banner__dot,
+      :root:not([data-motion]) .status-banner__dot::after,
+      :root:not([data-motion]) .logo__globe,
+      :root:not([data-motion]) .logo__pulse,
+      :root:not([data-motion]) .marquee__track,
+      :root:not([data-motion]) .footer__glow,
+      :root:not([data-motion]) .hero__marquee-track,
+      :root:not([data-motion]) .preview__halo,
+      :root:not([data-motion]) .preview__card,
+      :root:not([data-motion]) .preview__chip,
+      :root:not([data-motion]) .cta::before,
+      :root:not([data-motion]) .cta__shine {
+        animation-play-state: paused;
+      }
+    </style>
+
+    <link rel="preconnect" href="%VITE_API_URL%" crossorigin />
+
+    <script>
+
+      (function () {
+        try {
+          var theme = window.localStorage.getItem('chatlive-theme')
+          if (theme === 'light' || theme === 'dark') {
+            document.documentElement.dataset.theme = theme
+          }
+        } catch (error) {
+
+        }
+
+        cookies()
+        motion()
+
+        var api = '%VITE_API_URL%'
+        if (api.charAt(0) === '%') api = 'http://localhost:4000'
+        api = api.replace(/\/+$/, '')
+
+        // Ce document porte le heros de l accueil. La construction le remplace
+        // par celui de la route — `pageShell` dans `vite.config.ts`, qui marque
+        // son `<main>` — mais le serveur de developpement sert le document tel
+        // quel a toutes les adresses. Le heros de l accueil sur `/press` serait
+        // faux : il part. La ou la route a le sien, il reste, et l ecran garde
+        // son contenu jusqu a l arrivee de React au lieu de se vider.
+        if (location.pathname !== '/') {
+          document.addEventListener('DOMContentLoaded', function () {
+            var hero = document.querySelector('#boot .main')
+            if (hero && hero.dataset.routeShell === undefined) hero.remove()
+          })
+        }
+
+        var pending = {}
+        window.__CHATLIVE_BOOT__ = pending
+        ;['/api/site', '/api/stats', '/api/showcase'].forEach(function (path) {
+
+          pending[path] = fetch(api + path, { priority: 'low' })
+            .then(function (response) {
+              return response.text().then(function (text) {
+                return { status: response.status, text: text }
+              })
+            })
+            .catch(function () {
+
+              return null
+            })
+        })
+
+        // The pre-rendered hero already carries this copy, and the application
+        // renders the live figures moments later. Writing them into the shell in
+        // between only bought a stale intermediate state, at the price of a forced
+        // style and layout pass in the middle of the boot.
+
+        function motion() {
+          var events = ['pointermove', 'pointerdown', 'touchstart', 'wheel', 'scroll', 'keydown']
+          var options = { capture: true, passive: true }
+
+          var start = function () {
+            document.documentElement.dataset.motion = ''
+            events.forEach(function (name) {
+              window.removeEventListener(name, start, options)
+            })
+          }
+
+          events.forEach(function (name) {
+            window.addEventListener(name, start, options)
+          })
+        }
+
+        function cookies() {
+          var KEY = 'chatlive-cookie-consent'
+          var VERSION = 1
+
+          var stored = null
+          try {
+            var raw = window.localStorage.getItem(KEY)
+            if (raw) stored = JSON.parse(raw)
+          } catch (error) {
+
+          }
+
+          if (stored && stored.version === VERSION && stored.necessary === true) {
+            document.documentElement.dataset.cookieConsent = ''
+            return
+          }
+
+          document.addEventListener('click', function (event) {
+            var button = event.target.closest && event.target.closest('[data-boot-consent]')
+            if (!button) return
+
+            var answer = button.dataset.bootConsent
+
+            if (answer === 'panel') {
+              window.__CHATLIVE_COOKIE_PANEL__ = true
+              return
+            }
+
+            var accepted = answer === 'accept'
+            try {
+              window.localStorage.setItem(
+                KEY,
+                JSON.stringify({
+                  necessary: true,
+                  preferences: accepted,
+                  analytics: accepted,
+                  marketing: accepted,
+                  version: VERSION,
+                  date: new Date().toISOString(),
+                }),
+              )
+            } catch (error) {
+
+            }
+
+            document.documentElement.dataset.cookieConsent = ''
+
+            var banner = document.querySelector('#boot .cookies')
+            if (banner) banner.remove()
+          })
+        }
+      })()
+    </script>
+  </head>
+  <body>
+
+    <div id="boot">
+      <div class="bg bg--aurora" aria-hidden="true">
+        <div class="bg__layer l1"></div>
+        <div class="bg__layer l2"></div>
+        <div class="bg__layer l3"></div>
+        <div class="bg__layer l4"></div>
+        <div class="bg__overlay"></div>
+        <div class="bg__vignette"></div>
+        <div class="bg__scanlines"></div>
+        <div class="bg__grain"></div>
+      </div>
+
+      <header class="navbar">
+        <div class="container navbar__inner">
+          <a class="navbar__brand" href="/" aria-label="ChatLive - home">
+            <span class="logo">
+              <svg
+                class="logo__mark"
+                width="36"
+                height="36"
+                viewBox="0 0 48 48"
+                role="img"
+                aria-label="ChatLive"
+              >
+                <defs>
+                  <linearGradient id="cl-grad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#FF8A33" />
+                    <stop offset="55%" stop-color="#FF6A00" />
+                    <stop offset="100%" stop-color="#C24A00" />
+                  </linearGradient>
+                  <linearGradient id="cl-shine" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55" />
+                    <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M24 3.5c11.3 0 20.5 8.6 20.5 19.2 0 10.6-9.2 19.2-20.5 19.2-2.2 0-4.4-.3-6.4-1L7.2 44.3a1.1 1.1 0 0 1-1.5-1.4l3.2-8.2C5.2 31.3 3.5 27.1 3.5 22.7 3.5 12.1 12.7 3.5 24 3.5z"
+                  fill="url(#cl-grad)"
+                />
+                <path
+                  d="M24 3.5c11.3 0 20.5 8.6 20.5 19.2 0 1-.1 2-.3 3C42.6 15.4 34.3 8.6 24 8.6S5.4 15.4 3.8 25.7c-.2-1-.3-2-.3-3C3.5 12.1 12.7 3.5 24 3.5z"
+                  fill="url(#cl-shine)"
+                />
+                <g
+                  class="logo__globe"
+                  fill="none"
+                  stroke="#FFFFFF"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <circle cx="24" cy="22.5" r="9.5" opacity="0.95"></circle>
+                  <path d="M14.5 22.5h19" opacity="0.9"></path>
+                  <ellipse cx="24" cy="22.5" rx="4.4" ry="9.5" opacity="0.9"></ellipse>
+                </g>
+                <circle class="logo__pulse" cx="35.5" cy="12.5" r="3.4" fill="#FFFFFF"></circle>
+              </svg>
+              <span class="logo__word">Chat<span class="logo__word-accent">Live</span></span>
+            </span>
+          </a>
+
+          <div class="navbar__nav" aria-hidden="true"></div>
+
+          <div class="navbar__actions">
+
+            <button type="button" class="icon-btn" aria-hidden="true" tabindex="-1">
+              <svg
+                class="boot-sun"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <circle cx="12" cy="12" r="4"></circle>
+                <path
+                  d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M5 5l1.8 1.8M17.2 17.2 19 19M19 5l-1.8 1.8M6.8 17.2 5 19"
+                ></path>
+              </svg>
+              <svg
+                class="boot-moon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M20 14.2A8.2 8.2 0 0 1 9.8 4 8.4 8.4 0 1 0 20 14.2z"></path>
+              </svg>
+            </button>
+            <a class="btn btn--ghost btn--sm navbar__login" href="/login">Sign in</a>
+            <a class="btn btn--primary btn--sm navbar__cta" href="/register">
+              Join
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M4 12h15m-6-6 6 6-6 6"></path>
+              </svg>
+            </a>
+            <button
+              type="button"
+              class="icon-btn navbar__burger"
+              aria-hidden="true"
+              tabindex="-1"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M4 7h16M4 12h16M4 17h10"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main class="main">
+        <div class="page page--instant">
+          <section class="hero">
+            <div class="container hero__inner">
+              <div class="hero__content">
+                <span class="eyebrow hero__eyebrow">
+                  <span class="dot"></span>
+                  Live, anywhere in the world
+                </span>
+
+                <h1 class="hero__title">
+                  Talk to your friends<span class="gradient-text"> anywhere in the world</span>,
+                  live.
+                </h1>
+
+                <p class="hero__lead">
+                  ChatLive brings friends from every corner of the globe together in real-time
+                  rooms: instant messages, original language flagged on every message, live
+                  presence and conversations that stay between their members.
+                </p>
+
+                <div class="hero__actions">
+                  <a class="btn btn--primary btn--lg" href="/chat">
+                    Open the chat
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="M4 12h15m-6-6 6 6-6 6"></path>
+                    </svg>
+                  </a>
+                  <a class="btn btn--ghost btn--lg" href="/features">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="m12 3 1.9 4.9L19 9.8l-5.1 1.9L12 17l-1.9-5.3L5 9.8l5.1-1.9z"></path>
+                      <path d="M18.5 15.5 19.4 18l2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9z"></path>
+                    </svg>
+                    See the features
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <section
+        class="cookies"
+        role="region"
+        aria-labelledby="cookies-titre"
+        aria-describedby="cookies-texte"
+      >
+        <div class="cookies__icon" aria-hidden="true">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M12 3l7.5 3v5.4c0 4.4-3 8.4-7.5 9.6-4.5-1.2-7.5-5.2-7.5-9.6V6z"></path>
+          </svg>
+        </div>
+
+        <div class="cookies__text">
+          <h2 id="cookies-titre">Your privacy</h2>
+          <p id="cookies-texte">
+            Only the cookies needed for the site to work have been set. The others —
+            preferences, audience measurement, advertising — wait for your consent.
+          </p>
+        </div>
+
+        <div class="cookies__actions">
+          <button type="button" class="btn btn--ghost btn--sm" data-boot-consent="panel">
+            Customize
+          </button>
+          <button type="button" class="btn btn--ghost btn--sm" data-boot-consent="refuse">
+            Reject all
+          </button>
+          <button type="button" class="btn btn--primary btn--sm" data-boot-consent="accept">
+            Accept all
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <div id="root"></div>
+
+    <noscript>
+      <nav class="noscript-nav" aria-label="Site">
+        <p>ChatLive needs JavaScript to display conversations in real time.</p>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/features">Features</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/communities">Communities</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/help">Help center</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/security">Security</a></li>
+          <li><a href="/register">Sign up</a></li>
+          <li><a href="/api-docs">API documentation</a></li>
+          <li><a href="/changelog">Changelog</a></li>
+          <li><a href="/status">Service status</a></li>
+          <li><a href="/careers">Careers</a></li>
+          <li><a href="/press">Press</a></li>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/terms">Terms of use</a></li>
+        </ul>
+      </nav>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

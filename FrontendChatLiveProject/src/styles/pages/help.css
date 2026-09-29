@@ -1,0 +1,125 @@
+.faq {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.faq__question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 1.05rem 1.25rem;
+  font-family: var(--font-display);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  text-align: left;
+  color: var(--text-strong);
+}
+
+.faq__question svg {
+  flex: none;
+  color: var(--brand-500);
+}
+
+.faq__answer {
+  padding: 0 1.25rem 1.15rem;
+  animation: fade-up 0.35s var(--ease-out) both;
+}
+
+.faq__answer p {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.channels {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.channel {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+}
+
+.channel h3 {
+  font-size: var(--fs-base);
+}
+
+.channel__link {
+  display: inline-block;
+  margin-block: 0.2rem;
+  font-size: var(--fs-sm);
+  color: var(--text-brand);
+}
+
+.channel__link:hover {
+  text-decoration: underline;
+}
+
+.channel p {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.help__search-wrap {
+  width: min(520px, 100%);
+}
+
+.help__search {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  transition: border-color 0.2s var(--ease-out);
+}
+
+.help__search:focus-within {
+  border-color: var(--border-brand);
+}
+
+.help__search svg {
+  flex: none;
+  color: var(--text-muted);
+}
+
+.help__search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--text-strong);
+  font-size: var(--fs-sm);
+}
+
+.help__search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.help__shortcut {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.help__shortcut-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: auto;
+  padding-top: var(--space-3);
+  font-size: var(--fs-sm);
+  color: var(--text-brand);
+  transition: gap 0.2s var(--ease-out);
+}
+
+.help__shortcut:hover .help__shortcut-go {
+  gap: 0.6rem;
+}

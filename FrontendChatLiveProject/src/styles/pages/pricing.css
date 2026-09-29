@@ -1,0 +1,126 @@
+.checklist__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex: none;
+  margin-top: 2px;
+  color: var(--brand-400);
+  background: rgba(255, 106, 0, 0.14);
+  border: 1px solid var(--border-brand);
+  border-radius: 50%;
+}
+
+.billing {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  backdrop-filter: blur(10px);
+}
+
+.plan__ribbon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--grad-brand);
+  border-radius: var(--radius-full);
+}
+
+.plan__head h3 {
+  font-size: var(--fs-2xl);
+}
+
+.plan__head p {
+  margin-top: 0.35rem;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.plan__price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.plan__amount {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--text-strong);
+  line-height: 1;
+}
+
+.plan__currency {
+  font-size: var(--fs-lg);
+  color: var(--brand-500);
+  font-weight: 600;
+}
+
+.plan__period {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.plan__features {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.plan__features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+
+.faq {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.faq__question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 1.05rem 1.25rem;
+  font-family: var(--font-display);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  text-align: left;
+  color: var(--text-strong);
+}
+
+.faq__question svg {
+  flex: none;
+  color: var(--brand-500);
+}
+
+.faq__answer {
+  padding: 0 1.25rem 1.15rem;
+  animation: fade-up 0.35s var(--ease-out) both;
+}
+
+.faq__answer p {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}

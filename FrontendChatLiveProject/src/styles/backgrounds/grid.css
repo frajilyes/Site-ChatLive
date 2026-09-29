@@ -1,0 +1,58 @@
+.bg--grid .plane {
+  inset: -10% -50% -60%;
+  overflow: hidden;
+  transform: perspective(680px) rotateX(66deg);
+  transform-origin: 50% 100%;
+  mask-image: linear-gradient(to top, #000 0%, transparent 78%);
+}
+
+.bg--grid .plane::before {
+  content: '';
+  position: absolute;
+  inset: -90px 0;
+  background-image:
+    linear-gradient(rgba(255, 106, 0, 0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 106, 0, 0.16) 1px, transparent 1px);
+  background-size: 90px 90px;
+  will-change: transform;
+  animation: grid-run 9s linear infinite;
+}
+
+.bg--grid .glow {
+  bottom: -14vmax;
+  left: 50%;
+  width: 84vmax;
+  height: 42vmax;
+  translate: -50% 0;
+  filter: blur(90px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 106, 0, 0.5), transparent 68%);
+  animation: core-breathe 12s var(--ease-in-out) infinite;
+}
+
+.bg--grid .stars {
+  inset: 0;
+  background-image:
+    radial-gradient(1.6px 1.6px at 12% 22%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1.4px 1.4px at 68% 14%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1.8px 1.8px at 84% 46%, rgba(255, 166, 98, 0.8), transparent),
+    radial-gradient(1.3px 1.3px at 32% 58%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1.5px 1.5px at 52% 8%, rgba(255, 255, 255, 0.5), transparent);
+  animation: twinkle 6s var(--ease-in-out) infinite;
+}
+
+@keyframes grid-run {
+  to {
+    transform: translate3d(0, 90px, 0);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}

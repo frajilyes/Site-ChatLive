@@ -1,0 +1,53 @@
+{
+  "name": "backendchatliveproject",
+  "version": "1.0.0",
+  "description": "API REST et temps reel de ChatLive (TypeScript) : comptes, salons, messages, communautes et contact.",
+  "main": "dist/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "predev": "tsx scripts/free-port.ts",
+    "dev": "tsx watch index.ts",
+    "free-port": "tsx scripts/free-port.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "seed": "tsx scripts/seed.ts",
+    "purge-demo": "tsx scripts/purge-demo.ts",
+    "translate-to-english": "tsx scripts/translate-to-english.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chat",
+    "express",
+    "mongodb",
+    "socket.io",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/nodemailer": "^8.0.1",
+    "bcrypt": "^6.0.0",
+    "compression": "^1.8.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "google-auth-library": "^11.0.2",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.4",
+    "nodemailer": "^10.0.7",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/compression": "^1.8.1",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.5.0",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,173 @@
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: var(--bg);
+  contain: strict;
+}
+
+.bg__layer {
+  position: absolute;
+  transform-origin: center;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.bg__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 78% 8%, rgba(255, 106, 0, 0.2), transparent 58%),
+    radial-gradient(90% 70% at 10% 92%, rgba(255, 138, 51, 0.14), transparent 60%),
+    linear-gradient(180deg, rgba(5, 5, 6, 0.82) 0%, rgba(5, 5, 6, 0.62) 38%, rgba(5, 5, 6, 0.88) 100%);
+}
+
+.bg__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(115% 85% at 50% 45%, transparent 40%, rgba(5, 5, 6, 0.72) 100%);
+}
+
+.bg__grain {
+  position: absolute;
+  inset: -120%;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  animation: grain-drift 8s steps(6) infinite;
+}
+
+.bg__scanlines {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.028) 0px,
+    rgba(255, 255, 255, 0.028) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+:root[data-theme='light'] .bg__overlay {
+  background:
+    radial-gradient(120% 90% at 78% 8%, rgba(255, 106, 0, 0.16), transparent 58%),
+    radial-gradient(90% 70% at 10% 92%, rgba(255, 138, 51, 0.12), transparent 60%),
+    linear-gradient(180deg, rgba(247, 247, 249, 0.88) 0%, rgba(247, 247, 249, 0.7) 38%, rgba(247, 247, 249, 0.92) 100%);
+}
+
+:root[data-theme='light'] .bg__vignette {
+  background: radial-gradient(115% 85% at 50% 45%, transparent 45%, rgba(247, 247, 249, 0.78) 100%);
+}
+
+:root[data-theme='light'] .bg__grain {
+  opacity: 0.03;
+}
+
+@keyframes grain-drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(-6%, 4%, 0);
+  }
+  40% {
+    transform: translate3d(4%, -5%, 0);
+  }
+  60% {
+    transform: translate3d(-3%, -3%, 0);
+  }
+  80% {
+    transform: translate3d(5%, 3%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.bg--aurora .bg__layer {
+  border-radius: 50%;
+  filter: blur(70px);
+}
+
+.bg--aurora .l1 {
+  width: 62vmax;
+  height: 62vmax;
+  top: -22vmax;
+  left: -14vmax;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 106, 0, 0.9), transparent 66%);
+  animation: aurora-a 22s var(--ease-in-out) infinite;
+}
+
+.bg--aurora .l2 {
+  width: 54vmax;
+  height: 54vmax;
+  bottom: -20vmax;
+  right: -12vmax;
+  background: radial-gradient(circle at 60% 40%, rgba(255, 166, 98, 0.62), transparent 68%);
+  animation: aurora-b 27s var(--ease-in-out) infinite;
+}
+
+.bg--aurora .l3 {
+  width: 44vmax;
+  height: 44vmax;
+  top: 32%;
+  left: 42%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 65%);
+  animation: aurora-c 19s var(--ease-in-out) infinite;
+}
+
+.bg--aurora .l4 {
+  inset: -30%;
+  border-radius: 0;
+  filter: blur(90px);
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    rgba(255, 106, 0, 0.16) 70deg,
+    transparent 150deg,
+    rgba(255, 255, 255, 0.07) 250deg,
+    transparent 360deg
+  );
+  animation: slow-spin 44s linear infinite;
+}
+
+@keyframes aurora-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(16vw, 10vh, 0) scale(1.18);
+  }
+}
+
+@keyframes aurora-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(-18vw, -12vh, 0) scale(0.88);
+  }
+}
+
+@keyframes aurora-c {
+  0%,
+  100% {
+    transform: translate3d(-50%, -50%, 0) scale(0.9);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(-42%, -58%, 0) scale(1.2);
+    opacity: 0.9;
+  }
+}
+
+@keyframes slow-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

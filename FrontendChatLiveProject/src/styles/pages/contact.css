@@ -1,0 +1,90 @@
+.contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.contact__form-title {
+  font-size: var(--fs-xl);
+}
+
+.contact__status {
+  font-size: var(--fs-xs);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.contact__aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.channels {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.channel {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+}
+
+.channel h3 {
+  font-size: var(--fs-base);
+}
+
+.channel__link {
+  display: inline-block;
+  margin-block: 0.2rem;
+  font-size: var(--fs-sm);
+  color: var(--text-brand);
+}
+
+.channel__link:hover {
+  text-decoration: underline;
+}
+
+.channel p {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.offices h3 {
+  margin-bottom: var(--space-4);
+  font-size: var(--fs-lg);
+}
+
+.offices ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.offices li {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.offices li strong {
+  display: block;
+  font-size: var(--fs-sm);
+  color: var(--text-strong);
+}
+
+.offices li small {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.offices__note {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
