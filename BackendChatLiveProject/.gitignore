@@ -1,9 +1,10 @@
 /node_modules
 /dist
 
+# Variables d environnement locales
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
 npm-debug.log*
 yarn-error.log*

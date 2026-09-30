@@ -146,7 +146,10 @@ async function audit(url, port, desktop) {
 
   return {
     score: Math.round(lhr.categories.performance.score * 100),
-    metrics: METRICS.map(([id, label]) => [label, lhr.audits[id].numericValue]),
+    // La note de chaque metrique accompagne sa valeur : c est elle qui decide du
+    // score, et une valeur en millisecondes ne dit pas seule s il reste quelque
+    // chose a gagner sur cette ligne — ni combien de marge la separe du seuil.
+    metrics: METRICS.map(([id, label]) => [label, lhr.audits[id].numericValue, lhr.audits[id].score]),
     // Opportunities worth knowing about even while the score sits at 100.
     flagged: lhr.categories.performance.auditRefs
       .filter((ref) => ref.group === 'diagnostics' || ref.group === 'insights')
@@ -242,7 +245,8 @@ async function main() {
 
       const detail = METRICS.map(([, label], index) => {
         const values = results.map((entry) => entry.metrics[index][1]).sort((a, b) => a - b)
-        return `${label}=${format(label, median(values))}`
+        const notes = results.map((entry) => entry.metrics[index][2]).sort((a, b) => a - b)
+        return `${label}=${format(label, median(values))}(${median(notes).toFixed(2)})`
       })
 
       console.log(

@@ -36,7 +36,7 @@ function GoogleGlyph() {
 }
 
 export function GoogleAuthButton({ country, onSuccess, onStart }: GoogleAuthButtonProps) {
-  const { status, clientId } = useGoogleIdentity()
+  const { status, clientId, load } = useGoogleIdentity()
   const { loginWithGoogle } = useAuth()
 
   const frame = useRef<HTMLDivElement>(null)
@@ -138,7 +138,12 @@ export function GoogleAuthButton({ country, onSuccess, onStart }: GoogleAuthButt
           <button
             type="button"
             className="btn btn--ghost btn--lg btn--block auth__google-fallback"
-            disabled
+            // Tant que le script attend le visiteur, ce bouton est le sien : le
+            // viser demande l identite Google, et le vrai bouton prend sa place
+            // des qu elle repond. Les autres etats ne menent nulle part.
+            disabled={status !== 'deferred'}
+            onFocus={status === 'deferred' ? load : undefined}
+            onClick={status === 'deferred' ? load : undefined}
           >
             <GoogleGlyph />
             {status === 'loading' ? 'Loading Google...' : 'Continue with Google'}

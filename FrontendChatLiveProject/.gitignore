@@ -26,3 +26,11 @@ dist-base
 *.njsproj
 *.sln
 *.sw?
+
+
+
+
+# Variables d environnement locales
+.env
+.env.*
+!.env.example

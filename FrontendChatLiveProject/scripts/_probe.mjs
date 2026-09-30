@@ -4,13 +4,18 @@ import { spawn } from 'node:child_process'
 import { writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import lighthouse from 'lighthouse'
+import lighthouse, { desktopConfig } from 'lighthouse'
 import * as chromeLauncher from 'chrome-launcher'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const VITE = join(ROOT, 'node_modules', 'vite', 'bin', 'vite.js')
-const route = process.argv[2] ?? '/'
-const outDir = process.argv[3] ?? 'dist'
+// Le profil se lit ou qu il soit ecrit : les deux autres arguments sont
+// positionnels, et l oublier mesurerait le telephone en croyant noter le bureau.
+const argv = process.argv.slice(2)
+const desktop = argv.includes('--desktop')
+const positional = argv.filter((arg) => !arg.startsWith('--'))
+const route = positional[0] ?? '/'
+const outDir = positional[1] ?? 'dist'
 const port = 4173
 
 const server = spawn(process.execPath, [VITE, 'preview', '--outDir', outDir, '--port', String(port), '--strictPort'], { cwd: ROOT, stdio: 'ignore' })
@@ -24,7 +29,10 @@ const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless=new', '--
 const opts = { port: chrome.port, output: 'json', onlyCategories: ['performance'], logLevel: 'error' }
 
 let lhr
-for (let pass = 0; pass < 4; pass++) ({ lhr } = await lighthouse(origin + route, opts))
+for (let pass = 0; pass < 4; pass++)
+  ({ lhr } = desktop
+    ? await lighthouse(origin + route, opts, desktopConfig)
+    : await lighthouse(origin + route, opts))
 
 const a = lhr.audits
 const n = (id) => Math.round(a[id]?.numericValue ?? -1)
@@ -64,5 +72,14 @@ for (const ref of lhr.categories.performance.auditRefs) {
   if (e && e.score !== null && e.score < 0.9) console.log('  ' + e.id + ': ' + (e.displayValue ?? ''))
 }
 
-await chrome.kill().catch(() => {})
+// `kill()` supprime le profil temporaire de facon synchrone, et Windows le
+// refuse encore assez souvent (EPERM) : sans ce filet l erreur remonte apres
+// la mesure, le serveur de preview reste debout et la sonde sort en echec
+// alors qu elle a tout dit.
+try {
+  await chrome.kill()
+} catch {
+  // Profil laisse au menage de Windows.
+}
+
 server.kill()
